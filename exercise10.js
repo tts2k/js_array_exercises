@@ -25,10 +25,20 @@ Array.prototype.myFilter = function(callback) {
 }
 
 Array.prototype.myReduce = function(callback, initialValue) {
-  const init = (initialValue) ? initialValue : this[0];
-  const result = init;
+  let init;
+  let i;
+  if (initialValue) {
+    i = 0;
+    init = initialValue;
+  }
+  else {
+    i = 1;
+    init = this[0];
+  }
 
-  for (let i = 1; i < this.length; i++) {
+  let result = init;
+
+  for (i; i < this.length; i++) {
     result = callback(result, this[i]);
   }
 
@@ -62,10 +72,15 @@ const order = {
   address: '12 Giai Phong Street'
 };
 
-const orderReduced = order.cart.reduce((prev, obj) => {
+const orderReduced = order.cart.myReduce((prev, obj) => {
     return {
       totalOfMoney: prev.totalOfMoney + obj.price * obj.amount,
       totalOfAmount: prev.totalOfAmount + obj.amount
     }
   }, { totalOfMoney:0, totalOfAmount: 0 })
 console.log(orderReduced);
+
+const numbers = [1, 2, 3, 4, 5, 6];
+
+const numbersReduced = numbers.myReduce((prev, curr) => prev + curr);
+console.log(numbersReduced);
